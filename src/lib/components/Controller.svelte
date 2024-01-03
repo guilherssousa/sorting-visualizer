@@ -38,7 +38,13 @@
         </strong>
       </label>
 
-      <input type="number" name="min-value" required bind:value={$sortController.min} />
+      <input
+        type="number"
+        name="min-value"
+        required
+        max={$sortController.max}
+        bind:value={$sortController.min}
+      />
     </div> 
     
     <div class="control-item">
@@ -48,7 +54,13 @@
         </strong>
       </label>
 
-      <input type="number" name="max-value" required bind:value={$sortController.max} />
+      <input 
+        type="number" 
+        name="max-value" 
+        required 
+        min={$sortController.min} 
+        bind:value={$sortController.max}
+      />
     </div> 
 
     <!-- <div class="timeline-controllers"> -->
