@@ -1,28 +1,25 @@
 <script lang="ts">
   import { sortController } from '../stores/sort';
-  
-  let intervalId: number;
-  let status: string = 'idle';
 </script>
 
 
 <footer>
   <div>
-    <div class="control-item">
-      <label for="algorithm">
-        <strong>
-          Sorting Algorithm:
-        </strong>
-      </label>
-
-      <select bind:value={$sortController.algorithm}>
-        {#each Object.entries($sortController.availableAlgorithms) as algo}
-          <option value={algo[0]}>
-            {algo[1]}
-          </option>
-        {/each}
-      </select>
-    </div> 
+    <!-- <div class="control-item"> -->
+    <!--   <label for="algorithm"> -->
+    <!--     <strong> -->
+    <!--       Sorting Algorithm: -->
+    <!--     </strong> -->
+    <!--   </label> -->
+    <!---->
+    <!--   <select bind:value={$sortController.algorithm}> -->
+    <!--     {#each Object.entries($sortController.availableAlgorithms) as algo} -->
+    <!--       <option value={algo[0]}> -->
+    <!--         {algo[1]} -->
+    <!--       </option> -->
+    <!--     {/each} -->
+    <!--   </select> -->
+    <!-- </div>  -->
 
     <div class="control-item">
       <label for="sample-size">
@@ -54,13 +51,13 @@
       <input type="number" name="max-value" required bind:value={$sortController.max} />
     </div> 
 
-    <div class="timeline-controllers">
-      <button class="timeline-button" on:click={startSort}>
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-        </svg>
-      </button>
-    </div>
+    <!-- <div class="timeline-controllers"> -->
+    <!--   <button class="timeline-button" on:click={startSort}> -->
+    <!--     <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> -->
+    <!--       <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" /> -->
+    <!--     </svg> -->
+    <!--   </button> -->
+    <!-- </div> -->
   </div>
 </footer>
 

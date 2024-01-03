@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import Controller from './lib/components/Controller.svelte'
-  
+
   import { sample } from './lib/stores/sort'
-f/script>
+</script>
 
 <main>
   <div class="bars">
-    {#each $sample.numbers as item (item)}
+    {#each $sample.numbers as item, index (`sample-item-${index}`)}
       <div class="item">
         <div class="bar" style:height={`${(200*(item/$sample.max))}px`} style:width={`${720/$sample.numbers.length}px`}></div>
         <span style:display={$sample.numbers.length > 50 ? "none" : "inline"}>{item}</span>

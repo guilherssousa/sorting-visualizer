@@ -11,10 +11,6 @@ const defaultValues = {
   length: 30,
   min: 0,
   max: 100,
-  status: "idle",
-  algorithm: "quick",
-  availableAlgorithms,
-  timelineIntervalId: null,
 };
 
 function createSortStore() {
