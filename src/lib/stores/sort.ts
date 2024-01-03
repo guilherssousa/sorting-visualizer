@@ -2,8 +2,6 @@ import { derived, writable } from "svelte/store";
 
 import { generateRandomNumbers } from "../utils";
 
-import { algorithmImplementations } from "../implementations";
-
 const availableAlgorithms = {
   bubble: "Bubble Sort",
   quick: "Quick Sort",
