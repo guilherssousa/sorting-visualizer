@@ -31,7 +31,7 @@
     }
   }
 
-  onMount(() => {
+  function start() {
     const sorter = bubbleSort();
     let frameId: number;
     let lastTime = 0;
@@ -54,7 +54,16 @@
 
     frameId = requestAnimationFrame(sortNext);
     return () => cancelAnimationFrame(frameId);
-  })
+  }
+
+  function pause() {
+    _i = _j = undefined;
+  }
+
+  function reset() {
+    _i = _j = undefined;
+    sample = generateRandomNumbers($sortController.length, $sortController.min, $sortController.max);
+  }
 </script>
 
 <main>
