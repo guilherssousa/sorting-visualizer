@@ -1,31 +1,83 @@
-import { derived, writable } from "svelte/store";
+import { writable } from "svelte/store";
 
-import { generateRandomNumbers } from "../utils";
+import { play, pause } from "./global";
 
-const availableAlgorithms = {
-  bubble: "Bubble Sort",
-  quick: "Quick Sort",
+type SortState = {
+  array: number[];
+  isPlaying: boolean;
+  reset: boolean;
+  time: number;
+  speed: number;
+  timeIntervalId?: number;
 };
 
-const defaultValues = {
-  length: 30,
-  min: 0,
-  max: 100,
+const initialState: SortState = {
+  array: [],
+  isPlaying: false,
+  reset: false,
+  time: 0,
+  speed: 5,
+  timeIntervalId: undefined,
 };
 
 function createSortStore() {
-  const { subscribe, set, update } = writable(defaultValues);
+  const { subscribe, set, update } = writable(initialState);
+
+  function setArray(newArray: number[]) {
+    update((state) => {
+      return { ...state, array: newArray };
+    });
+  }
+
+  function setPlaying(isPlaying: boolean) {
+    isPlaying ? play() : pause();
+
+    update((state) => {
+      const newState = { ...state, isPlaying };
+
+      if (!state.isPlaying && state.timeIntervalId) {
+        clearInterval(state.timeIntervalId);
+        newState.timeIntervalId = undefined;
+      }
+
+      return newState;
+    });
+  }
+
+  function setIntervalId(intervalId: number) {
+    update((state) => {
+      return { ...state, timeIntervalId: intervalId };
+    });
+  }
+
+  function incrementTime() {
+    update((state) => {
+      return { ...state, time: ++state.time };
+    });
+  }
+
+  function setReset() {
+    update((state) => {
+      pause();
+      return { ...state, reset: !state.reset, time: 0 };
+    });
+  }
+
+  function setSpeed(speed: number) {
+    update((state) => {
+      return { ...state, speed };
+    });
+  }
 
   return {
     subscribe,
-    set,
-    update,
-    reset: () => set(defaultValues),
+    setArray,
+    setPlaying,
+    setIntervalId,
+    incrementTime,
+    setReset,
+    setSpeed,
   };
 }
 
-export const sortController = createSortStore();
-
-export const sample = derived(sortController, ($sort) =>
-  generateRandomNumbers($sort.length, $sort.min, $sort.max),
-);
+export const sort = createSortStore();
