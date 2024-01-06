@@ -81,19 +81,19 @@ function* partition(list: number[], low: number, high: number) {
   return index;
 }
 
-function* quickSort(
-  list: number[],
-  low: number = 0,
-  high: number = list.length - 1,
-): SortingGenerator {
+function* qs(list: number[], low: number, high: number): SortingGenerator {
   if (low < high) {
     const partitionIndex = yield* partition(list, low, high);
 
-    yield* quickSort(list, low, partitionIndex - 1);
-    yield* quickSort(list, partitionIndex + 1, high);
+    yield* qs(list, low, partitionIndex - 1);
+    yield* qs(list, partitionIndex + 1, high);
   }
 
   return { result: list };
+}
+
+function* quickSort(list: number[]): SortingGenerator {
+  return qs(list, 0, list.length - 1);
 }
 
 export const algorithms: Record<

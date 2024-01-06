@@ -1,26 +1,13 @@
 <script lang="ts">
-  import { sortController } from '../stores/sort';
+  import { sampleController } from '../stores/sort';
+
+  export let start: () => void; 
+  export let pause: () => void; 
 </script>
 
 
 <footer>
   <div>
-    <!-- <div class="control-item"> -->
-    <!--   <label for="algorithm"> -->
-    <!--     <strong> -->
-    <!--       Sorting Algorithm: -->
-    <!--     </strong> -->
-    <!--   </label> -->
-    <!---->
-    <!--   <select bind:value={$sortController.algorithm}> -->
-    <!--     {#each Object.entries($sortController.availableAlgorithms) as algo} -->
-    <!--       <option value={algo[0]}> -->
-    <!--         {algo[1]} -->
-    <!--       </option> -->
-    <!--     {/each} -->
-    <!--   </select> -->
-    <!-- </div>  -->
-
     <div class="control-item">
       <label for="sample-size">
         <strong>
@@ -28,7 +15,7 @@
         </strong>
       </label>
 
-      <input type="number" name="sample-size" required bind:value={$sortController.length} />
+      <input type="number" name="sample-size" required bind:value={$sampleController.length} />
     </div> 
 
     <div class="control-item">
@@ -42,8 +29,8 @@
         type="number"
         name="min-value"
         required
-        max={$sortController.max}
-        bind:value={$sortController.min}
+        max={$sampleController.max}
+        bind:value={$sampleController.min}
       />
     </div> 
     
@@ -58,18 +45,13 @@
         type="number" 
         name="max-value" 
         required 
-        min={$sortController.min} 
-        bind:value={$sortController.max}
+        min={$sampleController.min} 
+        bind:value={$sampleController.max}
       />
     </div> 
 
-    <!-- <div class="timeline-controllers"> -->
-    <!--   <button class="timeline-button" on:click={startSort}> -->
-    <!--     <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> -->
-    <!--       <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" /> -->
-    <!--     </svg> -->
-    <!--   </button> -->
-    <!-- </div> -->
+    <button on:click={start}>Sort</button>
+    <button on:click={pause}>Pause</button>
   </div>
 </footer>
 

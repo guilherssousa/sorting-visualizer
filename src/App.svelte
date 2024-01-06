@@ -3,91 +3,87 @@
   import { flip } from 'svelte/animate';
   import { sineInOut } from 'svelte/easing';
 
+  import { sampleController } from './lib/stores/sort'
+
   import Controller from './lib/components/Controller.svelte'
 
-  import { sortController } from './lib/stores/sort';
-
   import { generateRandomNumbers } from './lib/utils';
+  import { algorithms, type SortingGenerator, type StepState } from './lib/implementations';
 
-  let _i: number | undefined;
-  let _j: number | undefined;
-  $: sample = generateRandomNumbers($sortController.length, $sortController.min, $sortController.max);
+  let algorithmKey = "quickSort";
 
-  function swap(i: number, j: number) {
-    _i = i;
-    _j = j;
-    const tmp = sample.numbers[i];
-    sample.numbers[i] = sample.numbers[j];
-    sample.numbers[j] = tmp;
+  let selectedAlgorithm = algorithms[algorithmKey];
+
+  let sortingGenerator: SortingGenerator;
+  $: sortingGenerator = selectedAlgorithm.fn(generateRandomNumbers($sampleController.length, $sampleController.min, $sampleController.max))
+
+  let sortState: IteratorResult<StepState>;
+  $: sortState = sortingGenerator.next();
+
+  $: reset = () => {
+    sortingGenerator = selectedAlgorithm.fn(generateRandomNumbers($sampleController.length, $sampleController.min, $sampleController.max));
+    sortState = sortingGenerator.next();
   }
 
-  function* bubbleSort() {
-    for (let i = 0; i < sample.numbers.length; i++) {
-      for (let j = 0; j < sample.numbers.length - i - 1; j++) {
-        if (sample.numbers[j] > sample.numbers[j + 1]) {
-          yield swap(j, j+1)
+  const nextStep = () => {
+    if(!sortState.done) {
+      const next = sortingGenerator.next();
+      sortState = next;
+    }
+  }
+
+  let lastCalled = 0;
+  let delta = 0;
+  let time = 0;
+
+  // use a requestAnimationFrame loop to animate the sort
+  const start = () => {
+    const loop = () => {
+      if(time - lastCalled > delta) {
+        if(!sortState.done) {
+          nextStep();
+          lastCalled = time;
+          time = requestAnimationFrame(loop);
         }
       }
     }
+    time = requestAnimationFrame(loop);
   }
 
-  function start() {
-    const sorter = bubbleSort();
-    let frameId: number;
-    let lastTime = 0;
-
-    function sortNext(time: number) {
-      frameId = requestAnimationFrame(sortNext)
-
-      if (time - lastTime < 400) {
-        return;
-      }
-
-      lastTime = time;
-
-      const { done } = sorter.next();
-      if(done) {
-        _i = _j = undefined;
-        cancelAnimationFrame(frameId);
-      }
-    }
-
-    frameId = requestAnimationFrame(sortNext);
-    return () => cancelAnimationFrame(frameId);
+  const pause = () => {
+    cancelAnimationFrame(time);
   }
 
-  function pause() {
-    _i = _j = undefined;
-  }
+  onMount(() => {
+    reset()
+  })
 
-  function reset() {
-    _i = _j = undefined;
-    sample = generateRandomNumbers($sortController.length, $sortController.min, $sortController.max);
-  }
 </script>
 
 <main>
   <div class="bars">
-    {#each sample.numbers as item, index (`sample-item-${index}`)}
-      <div
-        class="item"
-        animate:flip={{ easing: sineInOut, duration: 500 }}
-      >
-        <span style:display={sample.numbers.length > 50 ? "none" : "inline"}>{item}</span>
-
+    {#if sortState}
+      {#each sortState.value.result as item, index (`sample-item-${index}`)}
         <div
-          class="bar"
-          style:background={(index === _i || index === _j) ? "#4ade80" : "#f0f9ff"}
-          style:width={`${720/sample.numbers.length}px`}
-          style:height={`${(200*(item/sample.max))}px`}
+          class="item"
+          animate:flip={{ easing: sineInOut, duration: 500 }}
         >
-        </div>
+          <span style:display={sortState.value.result.length > 50 ? "none" : "inline"}>{item}</span>
 
-      </div>
-    {/each}
+          <div
+            class="bar"
+            style:background-color={sortState.value.colors?.[index] ?? "#f0f9ff"}
+            style:width={`${720/sortState.value.result.length}px`}
+            style:height={`${item / $sampleController.max * 400}px`}
+          >
+          </div>
+
+        </div>
+      {/each}
+    {/if}
   </div>
 
-  <Controller />
+  <Controller {start} {pause} />
 </main>
 
 <style>
@@ -106,7 +102,7 @@
 
 .bars .item .bar {
   width: 32px;
-  max-height: 200px;
+  max-height: 400px;
   background-color: #f0f9ff;
   border-radius: 0 0 2px 2px;
   margin-bottom: 0.5rem;
