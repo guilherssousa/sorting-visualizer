@@ -15,7 +15,13 @@
         </strong>
       </label>
 
-      <input type="number" name="sample-size" required bind:value={$sampleController.length} />
+      <input 
+        type="number"
+        name="sample-size"
+        required
+        placeholder="Sample size"
+        bind:value={$sampleController.length}
+      />
     </div> 
 
     <div class="control-item">
@@ -29,6 +35,7 @@
         type="number"
         name="min-value"
         required
+        placeholder="Minimum value"
         max={$sampleController.max}
         bind:value={$sampleController.min}
       />
@@ -45,6 +52,7 @@
         type="number" 
         name="max-value" 
         required 
+        placeholder="Maximum value"
         min={$sampleController.min} 
         bind:value={$sampleController.max}
       />
