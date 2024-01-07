@@ -73,8 +73,7 @@
           <div
             class="bar"
             style:background-color={sortState.value.colors?.[index] ?? "#f0f9ff"}
-            style:width={`${720/sortState.value.result.length}px`}
-            style:height={`${item / $sampleController.max * 400}px`}
+            style:height={`${item / $sampleController.max * 700}px`}
           >
           </div>
 
@@ -89,7 +88,7 @@
 <style>
 .bars {
   display: flex;
-  column-gap: 16px;
+  column-gap: 1px;
 }
 
 .bars .item {
@@ -98,11 +97,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .bars .item .bar {
-  width: 32px;
-  max-height: 400px;
+  max-height: 700px;
+  width: 100%;
   background-color: #f0f9ff;
   border-radius: 0 0 2px 2px;
   margin-bottom: 0.5rem;
