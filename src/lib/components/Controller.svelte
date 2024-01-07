@@ -1,6 +1,8 @@
 <script lang="ts">
   import { sampleController } from '../stores/sort';
 
+  import { algorithms } from '../implementations';
+
   export let start: () => void; 
   export let pause: () => void; 
 </script>
@@ -8,6 +10,20 @@
 
 <footer>
   <div>
+    <div class="control-item">
+      <label for="selected-algoritm">
+        <strong>
+          Sorting algorithm:
+        </strong>
+      </label>
+
+      <select name="selected-algorithm" bind:value={$sampleController.algorithmKey}>
+        {#each Object.entries(algorithms) as [_algorithmKey, algorithm] (_algorithmKey)}
+          <option value={_algorithmKey}>{algorithm.name}</option>
+        {/each}
+      </select>
+    </div> 
+
     <div class="control-item">
       <label for="sample-size">
         <strong>

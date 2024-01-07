@@ -10,9 +10,7 @@
   import { generateRandomNumbers } from './lib/utils';
   import { algorithms, type SortingGenerator, type StepState } from './lib/implementations';
 
-  let algorithmKey = "quickSort";
-
-  let selectedAlgorithm = algorithms[algorithmKey];
+  $: selectedAlgorithm = algorithms[$sampleController.algorithmKey];
 
   let sortingGenerator: SortingGenerator;
   $: sortingGenerator = selectedAlgorithm.fn(generateRandomNumbers($sampleController.length, $sampleController.min, $sampleController.max))
