@@ -5,6 +5,14 @@
 
   export let start: () => void; 
   export let pause: () => void; 
+
+  let timer: number;
+  let delay = 1000;
+
+  function debounce(callback: Function, wait=delay) {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(callback, wait);
+  }
 </script>
 
 
@@ -35,8 +43,8 @@
         type="number"
         name="sample-size"
         required
-        placeholder="Sample size"
-        bind:value={$sampleController.length}
+        placeholder="Sample size"      
+        on:change={(e) => debounce(() => $sampleController.length = +e?.currentTarget?.value)} 
       />
     </div> 
 
@@ -114,30 +122,5 @@ footer > div {
 
 .control-item + .control-item {
   margin-left: 16px;
-}
-
-.timeline-controllers {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-left: 1rem;
-}
-
-.timeline-controllers .timeline-button {
-  border: 0;
-  border-radius: 2px;
-  outline: 0;
-  padding: 4px;
-
-  height: 24px;
-  width: 24px;
-
-  cursor: pointer;
-}
-
-.icon {
-  color: white;
-  width: 16px;
-  height: 16px;
 }
 </style>
