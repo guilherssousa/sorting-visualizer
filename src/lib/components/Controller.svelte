@@ -5,16 +5,7 @@
 
   export let start: () => void; 
   export let pause: () => void; 
-
-  let timer: number;
-  let delay = 1000;
-
-  function debounce(callback: Function, wait=delay) {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(callback, wait);
-  }
 </script>
-
 
 <footer>
   <div>
@@ -44,7 +35,7 @@
         name="sample-size"
         required
         placeholder="Sample size"      
-        on:change={(e) => debounce(() => $sampleController.length = +e?.currentTarget?.value)} 
+        bind:value={$sampleController.length}
       />
     </div> 
 
