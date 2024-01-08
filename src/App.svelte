@@ -1,7 +1,5 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { flip } from 'svelte/animate';
-  import { sineInOut } from 'svelte/easing';
 
   import { sampleController } from './lib/stores/sort'
 
@@ -13,7 +11,8 @@
   $: selectedAlgorithm = algorithms[$sampleController.algorithmKey];
 
   let sortingGenerator: SortingGenerator;
-  $: sortingGenerator = selectedAlgorithm.fn(generateRandomNumbers($sampleController.length, $sampleController.min, $sampleController.max))
+  $: sample = generateRandomNumbers($sampleController.length, $sampleController.min, $sampleController.max)
+  $: sortingGenerator = selectedAlgorithm.fn(sample)
 
   let sortState: IteratorResult<StepState>;
   $: sortState = sortingGenerator.next();
@@ -64,7 +63,6 @@
       {#each sortState.value.result as item, index (`sample-item-${index}`)}
         <div
           class="item"
-          animate:flip={{ easing: sineInOut, duration: 500 }}
         >
           <span style:display={sortState.value.result.length > 50 ? "none" : "inline"}>{item}</span>
 
@@ -87,6 +85,8 @@
 .bars {
   display: flex;
   column-gap: 1px;
+  align-items: flex-end;
+  height: calc(100vh - 64px);
 }
 
 .bars .item {
@@ -102,7 +102,7 @@
   max-height: 700px;
   width: 100%;
   background-color: #f0f9ff;
-  border-radius: 0 0 2px 2px;
+  border-radius: 2px 2px 0 0;
   margin-bottom: 0.5rem;
 }
 </style>

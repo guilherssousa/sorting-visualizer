@@ -5,6 +5,21 @@
 
   export let start: () => void; 
   export let pause: () => void; 
+
+  let length: number = $sampleController.length;
+  let min: number = $sampleController.min;
+  let max: number = $sampleController.max;
+
+  let timeout: number;
+
+  function debounce(fn: Function) {
+    if(timeout) { 
+      console.log("Cleaning timeout...")
+      clearTimeout(timeout)
+    };
+    console.log("Starting timeout...")
+    timeout = setTimeout(fn, 500);
+  }
 </script>
 
 <footer>
@@ -26,50 +41,56 @@
     <div class="control-item">
       <label for="sample-size">
         <strong>
-          Sample Size:
+          Sample Size: {length}
         </strong>
       </label>
 
       <input 
-        type="number"
+        type="range"
         name="sample-size"
         required
         placeholder="Sample size"      
-        bind:value={$sampleController.length}
+        min="1"
+        max="2000"
+        bind:value={length}
+        on:input={() => debounce(() => $sampleController.length = length)}
       />
-    </div> 
+    </div>
 
     <div class="control-item">
       <label for="min-value">
         <strong>
-          Min. value:
+          Min. value: {min}
         </strong>
       </label>
 
       <input
-        type="number"
+        type="range"
         name="min-value"
         required
         placeholder="Minimum value"
-        max={$sampleController.max}
-        bind:value={$sampleController.min}
+        max={min}
+        bind:value={min}
+        on:input={() => debounce(() => $sampleController.min = min)}
       />
     </div> 
     
     <div class="control-item">
       <label for="max-value">
         <strong>
-          Max. value:
+          Max. value: {max}
         </strong>
       </label>
 
       <input 
-        type="number" 
+        type="range" 
         name="max-value" 
         required 
         placeholder="Maximum value"
-        min={$sampleController.min} 
-        bind:value={$sampleController.max}
+        min={$sampleController.min}
+        max={1000}
+        bind:value={max}
+        on:input={() => debounce(() => $sampleController.max = max)}
       />
     </div> 
 
@@ -83,6 +104,8 @@ footer {
   position: fixed;
   bottom: 0;
   left: 0;
+  z-index: 999;
+  background-color: #242424;
 
   height: 64px;
   width: 100%;
