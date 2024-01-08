@@ -13,3 +13,5 @@ pnpm dev
 ## Adding new algorithms
 
 You can add new sorting algorithms on the [`src/lib/implementations.ts`](/src/lib/implementations.ts), using Generator Functions.
+Also, please add a test in [`tests/sort.test.ts`](tests/sort.test.ts) to check if the
+sort algo is working correctly.
