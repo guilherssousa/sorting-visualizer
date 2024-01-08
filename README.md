@@ -2,6 +2,8 @@
 
 This project was build using only [Svelte](https://svelte.dev) and Generator functions for sorting.
 
+![Preview Image](.github/preview.png)
+
 ## Setup
 
 ```bash
